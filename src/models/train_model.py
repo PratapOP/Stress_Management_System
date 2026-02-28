@@ -77,7 +77,8 @@ def main():
 
     models = train_models(X_train, y_train)
 
-    best_model = evaluate_models(models, X_test, y_test)
+    best_model = models["random_forest"]
+    print("\nUsing Random Forest for explainability.")
 
     os.makedirs("models", exist_ok=True)
     joblib.dump(best_model, MODEL_SAVE_PATH)
