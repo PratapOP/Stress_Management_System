@@ -28,9 +28,9 @@ def predict_stress(input_features):
 
     # Scale
     X_scaled = pd.DataFrame(
-        scaler.transform(df),
-        columns=feature_columns
-    )
+    scaler.transform(df),
+    columns=feature_columns
+)
     # Prediction
     pred = model.predict(X_scaled)[0]
 
