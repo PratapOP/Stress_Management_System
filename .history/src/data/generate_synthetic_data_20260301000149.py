@@ -32,32 +32,24 @@ for _ in range(N_SAMPLES):
 
     caffeine_intake = np.random.randint(0, 6)
 
-    eye_ratio = np.clip(
-        0.35 - (workload_hours / 40) + np.random.normal(0, 0.02),
-        0.18,
-        0.35
-    )
+    eye_ratio = np.random.uniform(0.18, 0.35)
     mouth_ratio = np.random.uniform(0.2, 0.6)
 
     # emotions random but realistic
     emo_base = np.random.rand(6)
-
-    # subtle stress correlation
-    emo_base[2] += workload_hours / 12   # sad increases with workload
-    emo_base[4] += sleep_hours / 9       # happy increases with sleep
     emotions = normalize(emo_base)
 
     # -------- STRESS SCORE (HIDDEN) --------
     stress_score = (
-        0.55 * workload_hours
-        + 0.45 * assignment_pressure
-        + 0.30 * screen_time
-        - 0.55 * sleep_hours
-        - 0.35 * (physical_activity / 30)
-        - 0.25 * social_interaction
-        + 0.35 * emotions[2]   # sad
-        + 0.25 * emotions[0]   # angry
-        - 0.30 * emotions[4]   # happy
+        0.35 * workload_hours
+        + 0.30 * assignment_pressure
+        + 0.25 * screen_time
+        - 0.35 * sleep_hours
+        - 0.25 * (physical_activity / 30)
+        - 0.20 * social_interaction
+        + 0.30 * emotions[2]   # sad
+        + 0.20 * emotions[0]   # angry
+        - 0.25 * emotions[4]   # happy
     )
 
     # BIGGER HUMAN VARIATION

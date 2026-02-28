@@ -49,16 +49,16 @@ for _ in range(N_SAMPLES):
 
     # -------- STRESS SCORE (HIDDEN) --------
     stress_score = (
-        0.55 * workload_hours
-        + 0.45 * assignment_pressure
-        + 0.30 * screen_time
-        - 0.55 * sleep_hours
-        - 0.35 * (physical_activity / 30)
-        - 0.25 * social_interaction
-        + 0.35 * emotions[2]   # sad
-        + 0.25 * emotions[0]   # angry
-        - 0.30 * emotions[4]   # happy
-    )
+    0.55 * workload_hours
+    + 0.45 * assignment_pressure
+    + 0.30 * screen_time
+    - 0.55 * sleep_hours
+    - 0.35 * (physical_activity / 30)
+    - 0.25 * social_interaction
+    + 0.35 * emotions[2]   # sad
+    + 0.25 * emotions[0]   # angry
+    - 0.30 * emotions[4]   # happy
+)
 
     # BIGGER HUMAN VARIATION
     stress_score += np.random.normal(0, 1.2)

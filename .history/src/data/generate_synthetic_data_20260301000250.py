@@ -49,15 +49,15 @@ for _ in range(N_SAMPLES):
 
     # -------- STRESS SCORE (HIDDEN) --------
     stress_score = (
-        0.55 * workload_hours
-        + 0.45 * assignment_pressure
-        + 0.30 * screen_time
-        - 0.55 * sleep_hours
-        - 0.35 * (physical_activity / 30)
-        - 0.25 * social_interaction
-        + 0.35 * emotions[2]   # sad
-        + 0.25 * emotions[0]   # angry
-        - 0.30 * emotions[4]   # happy
+        0.35 * workload_hours
+        + 0.30 * assignment_pressure
+        + 0.25 * screen_time
+        - 0.35 * sleep_hours
+        - 0.25 * (physical_activity / 30)
+        - 0.20 * social_interaction
+        + 0.30 * emotions[2]   # sad
+        + 0.20 * emotions[0]   # angry
+        - 0.25 * emotions[4]   # happy
     )
 
     # BIGGER HUMAN VARIATION
