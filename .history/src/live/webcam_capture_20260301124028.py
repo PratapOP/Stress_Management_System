@@ -76,17 +76,17 @@ def capture_session(duration_sec=5):
 
                 # emotion detection
                 try:
-                    result = DeepFace.analyze(
-                        frame,
-                        actions=['emotion'],
-                        enforce_detection=False,
-                        silent=True
-                    )
+    result = DeepFace.analyze(
+        frame,
+        actions=['emotion'],
+        enforce_detection=False,
+        silent=True
+    )
 
-                    emo = result[0]["emotion"]
+    emo = result[0]["emotion"]
 
-                except:
-                    continue
+except:
+    continue
 
                     features_list.append({
                         "eye_ratio": ear,

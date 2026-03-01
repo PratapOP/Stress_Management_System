@@ -1,7 +1,6 @@
 import cv2
 import mediapipe as mp
 import numpy as np
-from deepface import DeepFace
 
 mp_face_mesh = mp.solutions.face_mesh
 
@@ -75,18 +74,10 @@ def capture_session(duration_sec=5):
                 mar = mouth_ratio(coords)
 
                 # emotion detection
-                try:
-                    result = DeepFace.analyze(
-                        frame,
-                        actions=['emotion'],
-                        enforce_detection=False,
-                        silent=True
-                    )
+                emotions = detector.detect_emotions(frame)
 
-                    emo = result[0]["emotion"]
-
-                except:
-                    continue
+                if emotions:
+                    emo = emotions[0]["emotions"]
 
                     features_list.append({
                         "eye_ratio": ear,
