@@ -41,13 +41,8 @@ def predict_stress(input_features):
     # ---------- SHAP EXPLANATION ----------
     shap_values = explainer.shap_values(X_scaled)
 
-    # Handle new SHAP versions
-    if isinstance(shap_values, list):
-        # old format: list per class
-        class_shap = shap_values[pred][0]
-    else:
-        # new format: 3D array [samples, classes, features]
-        class_shap = shap_values[0, pred]
+    # For multiclass → select predicted class
+    class_shap = shap_values[pred][0]
 
     contributions = list(zip(feature_columns, class_shap))
 

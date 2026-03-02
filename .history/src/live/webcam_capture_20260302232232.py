@@ -69,7 +69,8 @@ def capture_session(duration_sec=5):
                     eye_centers.append((cx, cy))
 
                 # draw line between eyes
-                cv2.line(frame, eye_centers[0], eye_centers[1], (0, 255, 255), 2)
+                cv2.line(frame, eye_centers[0], eye_centers[1],
+                        (0, 255, 255), 2)
 
                 eye_distance = np.linalg.norm(
                     np.array(eye_centers[0]) -
