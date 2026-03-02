@@ -37,25 +37,25 @@ def predict_stress(input_features):
     # ---------- TOP 5 FACTORS ----------
     top_factors = []
 
-    if hasattr(model, "feature_importances_"):
+if hasattr(model, "feature_importances_"):
 
-        importances = model.feature_importances_
+    importances = model.feature_importances_
 
-        # local contribution estimate
-        contributions = []
+    # local contribution estimate
+    contributions = []
 
-        for i, feat in enumerate(feature_columns):
-            value = abs(df.iloc[0][feat])
-            score = value * importances[i]
-            contributions.append((feat, score))
+    for i, feat in enumerate(feature_columns):
+        value = abs(df.iloc[0][feat])
+        score = value * importances[i]
+        contributions.append((feat, score))
 
-        contributions = sorted(
-            contributions,
-            key=lambda x: x[1],
-            reverse=True
-        )
+    contributions = sorted(
+        contributions,
+        key=lambda x: x[1],
+        reverse=True
+    )
 
-        top_factors = contributions[:5]
+    top_factors = contributions[:5]
 
     # ---------- ADVICE ----------
     advice = get_stress_advice(input_features, pred)
