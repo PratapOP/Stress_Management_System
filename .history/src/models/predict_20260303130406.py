@@ -1,9 +1,8 @@
 import joblib
 import pandas as pd
 import shap
-
-from src.recommendation.stress_advice import get_stress_advice
 from src.llm.llama_reasoner import generate_ai_report
+from src.recommendation.stress_advice import get_stress_advice
 
 MODEL_PATH = "models/stress_classifier.pkl"
 SCALER_PATH = "models/scaler.pkl"
@@ -15,7 +14,8 @@ LABEL_MAP = {
     2: "HIGH"
 }
 
-# ---------- LOAD MODEL ONCE ----------
+
+# ---------- LOAD ONCE ----------
 model = joblib.load(MODEL_PATH)
 scaler = joblib.load(SCALER_PATH)
 feature_columns = joblib.load(FEATURES_PATH)
@@ -37,17 +37,21 @@ def predict_stress(input_features):
 
     # ---------- PREDICTION ----------
     pred = model.predict(X_scaled)[0]
-    stress_label = LABEL_MAP[pred]
 
     # ---------- SHAP EXPLANATION ----------
     shap_values = explainer.shap_values(X_scaled)
 
+    # Handle new SHAP versions
     if isinstance(shap_values, list):
+        # old format: list per class
         class_shap = shap_values[pred][0]
     else:
+        # new format: 3D array [samples, classes, features]
         class_shap = shap_values[0, pred]
 
     contributions = list(zip(feature_columns, class_shap))
+
+    # sort by absolute impact
     contributions = sorted(
         contributions,
         key=lambda x: abs(x[1]),
@@ -59,32 +63,10 @@ def predict_stress(input_features):
     # ---------- ADVICE ----------
     advice = get_stress_advice(input_features, pred)
 
-    # ---------- LLM REPORT ----------
-    shap_summary = [
-        f"{feature}: {value:.4f}"
-        for feature, value in top_factors
-    ]
-
-    try:
-        ai_report = generate_ai_report(
-            stress_label,
-            shap_summary,
-            input_features,
-            {
-                "eye_ratio": input_features["eye_ratio"],
-                "neutral": input_features["neutral"],
-                "happy": input_features["happy"],
-                "sad": input_features["sad"]
-            }
-        )
-    except Exception as e:
-        ai_report = "AI reasoning engine unavailable. Please ensure Ollama is running."
-
     return {
-        "stress_level": stress_label,
+        "stress_level": LABEL_MAP[pred],
         "top_factors": top_factors,
-        "advice": advice,
-        "ai_report": ai_report
+        "advice": advice
     }
 
 
@@ -118,6 +100,3 @@ if __name__ == "__main__":
     print("\nTop Factors (SHAP):")
     for f, v in result["top_factors"]:
         print(f"{f}: {v:.4f}")
-
-    print("\nAI REPORT:\n")
-    print(result["ai_report"])
